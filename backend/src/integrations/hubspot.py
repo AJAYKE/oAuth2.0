@@ -1,4 +1,3 @@
-# integrations/hubspot.py
 import json
 from typing import List
 
@@ -45,7 +44,7 @@ class HubspotService(OAuthService):
         access_token = credentials_dict.get("access_token")
         url = "https://api.hubapi.com/crm/v3/objects/contacts"
         headers = {"Authorization": f"Bearer {access_token}"}
-        params = {"limit": 100, "properties": "firstname,lastname,email"}
+        params = {"limit": 100, "properties": "firstname,lastname,emaixl"}
         items = []
         after = None
         while True:

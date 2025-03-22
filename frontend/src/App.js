@@ -1,10 +1,11 @@
 import { IntegrationForm } from "./components/IntegrationForm";
+import { AppProvider } from "./context/AppContext";
 
 function App() {
   return (
-    <div>
+    <AppProvider>
       <IntegrationForm />
-    </div>
+    </AppProvider>
   );
 }
 

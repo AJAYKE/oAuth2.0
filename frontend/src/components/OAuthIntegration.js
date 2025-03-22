@@ -1,15 +1,16 @@
 import { Box, Button, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import { integrationConfig } from "../config/integrations";
-import { apiService } from "../services/apiService";
+import { useAppContext } from "../context/AppContext";
 
-export const OAuthIntegration = ({
-  integrationType,
-  user,
-  org,
-  integrationParams,
-  setIntegrationParams,
-}) => {
+export const OAuthIntegration = () => {
+  const {
+    integrationType,
+    integrationParams,
+    setIntegrationParams,
+    apiService,
+  } = useAppContext();
+
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
 
@@ -18,14 +19,12 @@ export const OAuthIntegration = ({
   const handleConnectClick = async () => {
     try {
       setIsConnecting(true);
-      const authURL = await apiService.authorize(integrationType, user, org);
-
+      const authURL = await apiService.authorize();
       const newWindow = window.open(
         authURL,
         config.windowName,
         "width=600, height=600"
       );
-
       const pollTimer = window.setInterval(() => {
         if (newWindow?.closed !== false) {
           window.clearInterval(pollTimer);
@@ -42,11 +41,7 @@ export const OAuthIntegration = ({
 
   const handleWindowClosed = async () => {
     try {
-      const credentials = await apiService.getCredentials(
-        integrationType,
-        user,
-        org
-      );
+      const credentials = await apiService.getCredentials();
       if (credentials) {
         setIsConnected(true);
         setIntegrationParams((prev) => ({
